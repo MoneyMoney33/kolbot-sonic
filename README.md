@@ -1,5 +1,9 @@
 ## [Sonic Setup](SetupSonic.md/#sonic-setup)
 
+Many thanks to [Laz](https://github.com/laztheripper) - the author of sonic scripts.
+
+----
+
 ## Rules
 
 1. D2BS, D2Bot and kolbot # are educational tools with an open source developer community. These tools are meant to be used offline or on private servers that explicitly allow them. These tools are not meant to be abused on battle.net (a Blizzard Entertainment entity).

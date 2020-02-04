@@ -1,8 +1,21 @@
 ## Sonic Setup
 
+----
+
 **cloned from** https://github.com/SetupSonic/SetupSonic/wiki/D2Bot%23-Configuration
 
-Sonic is a solo sorceress script. It starts from a completely fresh character and plays through the game.
+Many thanks to [Laz](https://github.com/laztheripper) - the author of sonic scripts.
+
+----
+
+* [Things to be aware of:](#things-to-be-aware-of)
+* [Sonic configuration](#sonic-configuration)
+* [D2Bot# Setup](#d2bot-setup)
+* [Using the all default profile](#using-the-all-default-profile)
+
+----
+
+**Sonic is a solo sorceress script**. It starts from a completely fresh character and plays through the game.
 
 It will allow you to get a level 1 - ~80 sorceress in around 15 hours.
 
@@ -11,7 +24,9 @@ If you have problems running the application, ensure you have at least [.NET 4.5
 ## Things to be aware of:
 
 * Don't delete the all profile in Setup Sonic , this is used as the default profile configuration for profiles that don't have a specific sonic profile. If you accidentally delete it then be sure to re-add it.
+
 * Your D2Bot# profile name must include the term sonic. It doesn't matter how, as long as it's in there somewhere. All of these names are valid: asonic, profile sonic, hi-Sonic.
+
 * You should also setup mule profiles by following the normal steps from the kolbot guides.
 
 ## Sonic configuration
