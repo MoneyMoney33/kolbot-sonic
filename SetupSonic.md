@@ -13,6 +13,8 @@ Many thanks to [Laz](https://github.com/laztheripper) - the author of sonic scri
 * [D2Bot# Setup](#d2bot-setup)
 * [Using the all default profile](#using-the-all-default-profile)
 
+* [video guide](https://www.youtube.com/watch?v=iJyjeiDsLlc)
+
 ----
 
 **Sonic is a solo sorceress script**. It starts from a completely fresh character and plays through the game.
