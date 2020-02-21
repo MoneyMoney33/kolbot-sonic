@@ -1,7 +1,5 @@
 ## [Sonic Setup](SetupSonic.md/#sonic-setup)
 
-Many thanks to [Laz](https://github.com/laztheripper) - the author of sonic scripts.
-
 ----
 
 ## Rules
