@@ -4,8 +4,6 @@
 
 **cloned from** https://github.com/SetupSonic/SetupSonic/wiki/D2Bot%23-Configuration
 
-Many thanks to [Laz](https://github.com/laztheripper) - the author of sonic scripts.
-
 ----
 
 * [Things to be aware of:](#things-to-be-aware-of)
