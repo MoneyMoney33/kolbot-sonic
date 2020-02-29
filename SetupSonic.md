@@ -39,7 +39,7 @@ If you keep the Account or Character Name fields empty sonic will use a random s
 
 Using the following Setup Sonic profile for this example:
 
-![sonic1](images/kolbot-sonic1.png)
+![sonic1](assets/kolbot-sonic1.png)
 
 There are only 3 D2Bot# settings you must change:
 
@@ -51,7 +51,7 @@ Sonic does not use any of the normal D2Bot# fields like Account, Password, Game 
 
 Here is my D2Bot# config, notice how the Profile Names match - ConfigSonic: 
 
-![sonic2](images/kolbot-sonic2.png)
+![sonic2](assets/kolbot-sonic2.png)
 
 Click start in D2Bot# and go to sleep/work and come back in 15 hours to a leveled sorceress.
 
@@ -59,7 +59,7 @@ Click start in D2Bot# and go to sleep/work and come back in 15 hours to a levele
 
 If you want to use the default sonic profile there is no need to create any other sonic profiles. 
 
-![sonic3](images/kolbot-sonic3.png)
+![sonic3](assets/kolbot-sonic3.png)
 
 With this configuration any D2Bot# sonic profiles (a "sonic profile" is simply one with sonic in the profile name) created will use this config. The characters created will be on Europe Ladder Expansion. The characters will be created with a random account name and character name. Details for these accounts will be stored in d2bot-with-kolbot-sonic/d2bs/kolbot/libs/sonic/data/[ProfileName].json if you want to find the account name so you can login to the account or something.
 

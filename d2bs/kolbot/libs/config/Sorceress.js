@@ -1,13 +1,13 @@
 function LoadConfig() {
-	
+
 	Config.QuitList = [];
-	
+
 	Config.MakeRunewords = false;
 	Config.Cubing = me.getItem(549);
 	Config.Gamble = true;
 	Config.GambleGoldStart = 1000000;
 	Config.GambleGoldStop = 500000;
-	
+
 	Scripts.Sonic = true;
 	//Scripts.Manual = true;
 	Config.AutoEquip = true;
@@ -16,12 +16,12 @@ function LoadConfig() {
 
 	if (me.gametype === 1) {
 		Config.MakeRunewords = true;
-		
+
 		Config.PickitFiles.push("Sonic/Autoequip/expansion_sorc.nip");
 		Config.PickitFiles.push("Sonic/Autoequip/expansion_merc.nip");
 		Config.PickitFiles.push("Sonic/Autoequip/expansion_charms.nip");
 		Config.PickitFiles.push("Sonic/Autoequip/expansion_runewords.nip");
-		
+
 		if (me.ladder > 0) {
 			Config.PickitFiles.push("Sonic/Expansion/Ladder/Crafted.nip");
 			Config.PickitFiles.push("Sonic/Expansion/Ladder/Magic.nip");
@@ -41,27 +41,27 @@ function LoadConfig() {
 			Config.PickitFiles.push("Sonic/Expansion/NonLadder/Unique.nip");
 			Config.PickitFiles.push("Sonic/Expansion/NonLadder/White.nip");
 		}
-		
+
 		if (me.charlvl >= 87) {
 			Config.GambleItems.push("Amulet");
 		} else {
 			Config.GambleItems.push("Ring");
 		}
-		
+
 		Config.GambleItems.push("Circlet");
 		Config.GambleItems.push("Coronet");
-		
+
 		if (me.diff !== 2) {
 			Config.Runewords.push([Runeword.AncientsPledge, "Large Shield"]);
 			Config.Runewords.push([Runeword.AncientsPledge, "Kite Shield"]);
 			Config.Runewords.push([Runeword.AncientsPledge, "Bone Shield"]);
 			Config.Runewords.push([Runeword.AncientsPledge, "Grim Shield"]);
 			Config.KeepRunewords.push("[type] == shield # [fireresist]+[lightresist]+[coldresist]+[poisonresist] == 187");
-			
+
 			Config.Runewords.push([Runeword.Spirit, "Crystal Sword"]);
 			Config.Runewords.push([Runeword.Spirit, "Broad Sword"]);
 			Config.KeepRunewords.push("[type] == sword # [fcr] >= 25 && [maxmana] >= 89");
-			
+
 			Config.Runewords.push([Runeword.Smoke, "Quilted Armor"]);
 			Config.Runewords.push([Runeword.Smoke, "Leather Armor"]);
 			Config.Runewords.push([Runeword.Smoke, "Hard Leather Armor"]);
@@ -73,7 +73,7 @@ function LoadConfig() {
 			Config.Runewords.push([Runeword.Smoke, "Ghost Armor"]);
 			Config.Runewords.push([Runeword.Smoke, "Serpentskin Armor"]);
 			Config.KeepRunewords.push("[type] == armor # [fireresist] == 50");
-			
+
 			Config.Runewords.push([Runeword.Insight, "Voulge"]);
 			Config.Runewords.push([Runeword.Insight, "Scythe"]);
 			Config.Runewords.push([Runeword.Insight, "Poleaxe"]);
@@ -83,7 +83,7 @@ function LoadConfig() {
 			Config.Runewords.push([Runeword.Insight, "Partizan"]);
 			Config.Runewords.push([Runeword.Insight, "Grim Scythe"]);	
 		}
-		
+
 		if (me.charlvl <= 87) {
 			Config.Runewords.push([Runeword.Treachery, "Ring Mail"]);
 			Config.Runewords.push([Runeword.Treachery, "Light Plate"]);
@@ -93,20 +93,20 @@ function LoadConfig() {
 			Config.Runewords.push([Runeword.Treachery, "Dusk Shroud"]);
 			Config.KeepRunewords.push("[name] == MagePlate # [ias] == 45 && [coldresist] == 30");
 		}
-		
+
 		Config.Runewords.push([Runeword.Insight, "Colossus Voulge"]);
 		Config.Runewords.push([Runeword.Insight, "Thresher"]);
 		Config.Runewords.push([Runeword.Insight, "Cryptic Axe"]);
 		Config.Runewords.push([Runeword.Insight, "Giant Thresher"]);
 		Config.KeepRunewords.push("[type] == polearm # [strength] == 5 && [fcr] == 35");
-		
+
 		if (me.charlvl >= 85) {
 			Config.Runewords.push([Runeword.Spirit, "Monarch"]);
 			Config.Runewords.push([Runeword.Spirit, "Sacred Targe"]);
 			Config.KeepRunewords.push("[name] == Monarch # [fcr] >= 35 && [maxmana] >= 89");	
 			Config.KeepRunewords.push("[name] == SacredTarge # [fcr] >= 25 && [maxmana] >= 89");
 		}
-		
+
 		Config.Recipes.push([Recipe.Socket.Armor, "Archon Plate", Roll.Eth]);
 		Config.Recipes.push([Recipe.Socket.Armor, "Sacred Armor", Roll.Eth]);
 		//Config.Recipes.push([Recipe.Rune, "Lum Rune"]); 	// Upgrade Io to Lum
@@ -194,6 +194,24 @@ function LoadConfig() {
 	Config.PickRange = 40; // Pick radius
 	Config.FastPick = false; // Check and pick items between attacks
 
+	/* Advanced automule settings
+	 * Trigger - Having an item that is on the list will initiate muling. Useful if you want to mule something immediately upon finding.
+	 * Force - Items listed here will be muled even if they are ingredients for cubing.
+	 * Exclude - Items listed here will be ignored and will not be muled. Items on Trigger or Force lists are prioritized over this list.
+	 *
+	 * List can either be set as string in pickit format and/or as number referring to item classids. Each entries are separated by commas.
+	 * Example :
+	 *  Config.AutoMule.Trigger = [639, 640, "[type] == ring && [quality] == unique # [maxmana] == 20"];
+	 *  	This will initiate muling when your character finds Ber, Jah, or SOJ.
+	 *  Config.AutoMule.Force = [561, 566, 571, 576, 581, 586, 601];
+	 *  	This will mule perfect gems/skull during muling.
+	 *  Config.AutoMule.Exclude = ["[name] >= talrune && [name] <= solrune", "[name] >= 654 && [name] <= 657"];
+	 *  	This will exclude muling of runes from tal through sol, and any essences.
+	 */
+	Config.AutoMule.Trigger = [];
+	Config.AutoMule.Force = [];
+	Config.AutoMule.Exclude = [];
+
 	// Additional item info log settings. All info goes to \logs\ItemLog.txt
 	Config.ItemInfo = false; // Log stashed, skipped (due to no space) or sold items.
 	Config.ItemInfoQuality = []; // The quality of sold items to log. See NTItemAlias.dbl for values. Example: Config.ItemInfoQuality = [6, 7, 8];
@@ -209,11 +227,20 @@ function LoadConfig() {
 	// Repair settings
 	Config.CubeRepair = false; // Repair weapons with Ort and armor with Ral rune. Don't use it if you don't understand the risk of losing items.
 	Config.RepairPercent = 40; // Durability percent of any equipped item that will trigger repairs.
-	
+
 	// Public game options
 
+	// If LocalChat is enabled, chat can be sent via 'sendCopyData' instead of BNET
+	// To allow 'say' to use BNET, use 'say("msg", true)', the 2nd parameter will force BNET
+	// LocalChat messages will only be visible on clients running on the same PC
+	Config.LocalChat.Enabled = false; // enable the LocalChat system
+	Config.LocalChat.Toggle = false; // optional, set to KEY value to toggle through modes 0, 1, 2
+	Config.LocalChat.Mode = 0; // 0 = disabled, 1 = chat from 'say' (recommended), 2 = all chat (for manual play)
 	// If Config.Leader is set, the bot will only accept invites from leader. If Config.PublicMode is not 0, Baal and Diablo script will open Town Portals.
-	Config.PublicMode = 0; // 1 = invite and accept, 2 = accept only, 3 = invite only, 0 = disable
+
+	// If set on true, it simply parties.
+	Config.PublicMode = 0; // 1 = invite and accept, 2 = accept only, 3 = invite only, 0 = disable.
+
 	// Party message settings. Each setting represents an array of messages that will be randomly chosen.
 	// $name, $level, $class and $killer are replaced by the player's name, level, class and killer
 	Config.Greetings = []; // Example: ["Hello, $name (level $level $class)"]
@@ -227,43 +254,45 @@ function LoadConfig() {
 	Config.LastMessage = ""; // Message or array of messages to say at the end of the run. Use $nextgame to say next game - "Next game: $nextgame" (works with lead entry point)
 	Config.MinGameTime = 400; // Min game time in seconds. Bot will TP to town and stay in game if the run is completed before.
 	Config.MaxGameTime = 7200; // Maximum game time in seconds. Quit game when limit is reached.
-	Config.TeleSwitch = false; // Switch to slot II when teleporting more than 1 node.
+	Config.TeleSwitch = false; // Switch to secondary (non-primary) slot when teleporting more than 5 nodes.
 	Config.OpenChests = me.charlvl >= 19; // Open chests. Controls key buying.
 	Config.MiniShopBot = false; // Scan items in NPC shops.
 	Config.PacketShopping = true; // Use packets to shop. Improves shopping speed.
 	Config.TownCheck = false; // Go to town if out of potions
 	Config.LogExperience = false; // Print experience statistics in the manager.
 	Config.PingQuit = [{Ping: 0, Duration: 0}]; // Quit if ping is over the given value for over the given time period in seconds.
+	Config.Silence = false; // Make the bot not say a word. Do not use in combination with LocalChat
 
 	// Shrine Scanner - scan for shrines while moving.
 	// Put the shrine types in order of priority (from highest to lowest). For a list of types, see sdk/shrines.txt
 	Config.ScanShrines = [15,1,2,3,4,5,6,8,9,10,11,12,13,14];
 
 	// MF Switch
-	Config.MFSwitchPercent = 0; // Boss life % to switch weapons at. Set to 0 to disable.
-	Config.MFSwitch = 0; // MF weapon slot: 0 = slot I, 1 = slot II
+	Config.MFSwitchPercent = 0; // Boss life % to switch to non-primary weapon slot. Set to 0 to disable.
 
-	// Speedup config. Full packet casting is not recommended for melee skills.
-	Config.FCR = 255; // 0 - disable, 1 to 255 - set value of Faster Cast Rate.
-	Config.FHR = 255; // 0 - disable, 1 to 255 - set value of Faster Hit Recovery.
-	Config.FBR = 255; // 0 - disable, 1 to 255 - set value of Faster Block Recovery.
-	Config.IAS = 255; // 0 - disable, 1 to 255 - set value of Increased Attack Speed.
+	// Primary Slot - Bot will try to determine primary slot if not used (non-cta slot that's not empty)
+	Config.PrimarySlot = -1; // Set to use specific weapon slot as primary weapon slot: -1 = disabled, 0 = slot I, 1 = slot II
+
+	// Fastmod config
+	Config.FCR = 255; // 0 - disable, 1 to 255 - set value of faster cast rate
+	Config.FHR = 255; // 0 - disable, 1 to 255 - set value of faster hit recovery
+	Config.FBR = 255; // 0 - disable, 1 to 255 - set value of faster block recovery
+	Config.IAS = 255; // 0 - disable, 1 to 255 - set value of increased attack speed
 	Config.PacketCasting = 0; // 0 = disable, 1 = packet teleport, 2 = full packet casting.
-	Config.WaypointMenu = true; // Set to true for Single and private realms
+	Config.WaypointMenu = true;
 
 	// Anti-hostile config
-	Config.AntiHostile = false; // Enable anti-hostile.
+	Config.AntiHostile = false; // Enable anti-hostile
 	Config.HostileAction = 0; // 0 - quit immediately, 1 - quit when hostile player is sighted, 2 - attack hostile.
 	Config.TownOnHostile = false; // Go to town instead of quitting when HostileAction is 0 or 1.
 	Config.RandomPrecast = false; // Anti-PK measure, only supported in Baal and BaalHelper and BaalAssisstant at the moment.
-	Config.ViperCheck = false; // Quit if revived Tomb Vipers are sighted.
+	Config.ViperCheck = false; // Quit if revived Tomb Vipers are sighted
 
 	// DClone config
 	Config.StopOnDClone = true; // Go to town and idle as soon as Diablo walks the Earth
 	Config.SoJWaitTime = 5; // Time in minutes to wait for another SoJ sale before leaving game. 0 = disabled
 	Config.KillDclone = false; // Go to Palace Cellar 3 and try to kill Diablo Clone. Pointless if you already have Annihilus.
 	Config.DCloneQuit = false; // 1 = quit when Diablo walks, 2 = quit on soj sales, 0 = disabled
-	Config.WaitForHunter = true;
 
 	// Monster skip config
 	// Skip immune monsters. Possible options: "fire", "cold", "lightning", "poison", "physical", "magic".
@@ -274,10 +303,12 @@ function LoadConfig() {
 	Config.SkipEnchant = [];
 	// Skip monsters with auras. Possible options: "fanaticism", "might", "holy fire", "blessed aim", "holy freeze", "holy shock". Conviction is bugged, don't use it.
 	Config.SkipAura = [];
+	// Uncomment the following line to always attempt to kill these bosses despite immunities and mods
+	//Config.SkipException = [getLocaleString(2851), getLocaleString(2852), getLocaleString(2853)]; // vizier, de seis, infector
 
 	/* Attack config
 	 * To disable an attack, set it to -1
-	 * Skills MUST be POSITIVE numbers. For reference see http://pastebin.com/baShRwWM
+	 * Skills MUST be POSITIVE numbers. For reference see ...\kolbot\sdk\skills.txt
 	 */
 	Config.AttackSkill[0] = -1; // Preattack skill.
 	Config.AttackSkill[1] = 36; // Primary skill to bosses.
@@ -300,6 +331,7 @@ function LoadConfig() {
 		"Fallen Shaman": [36, 36]
 	};
 
+	Config.NoTele = false; // Restrict char from teleporting. Useful for low level/low mana chars
 	Config.Dodge = false; // Move away from monsters that get too close. Don't use with short-ranged attacks like Poison Dagger.
 	Config.DodgeRange = 15; // Distance to keep from monsters.
 	Config.DodgeHP = 100; // Dodge only if HP percent is less than or equal to Config.DodgeHP. 100 = always dodge.
@@ -313,11 +345,41 @@ function LoadConfig() {
 	// Class specific config
 	Config.CastStatic = 20; // Cast static until the target is at designated life percent. 100 = disabled.
 	Config.StaticList = ["Izual"]; // List of monster NAMES or CLASSIDS to static. Example: Config.StaticList = ["Andariel", 243];
-	
-	
+
+	/* AutoSkill builds character based on array defined by the user and it replaces AutoBuild's skill system.
+	 * AutoSkill will automatically spend skill points and it can also allocate any prerequisite skills as required.
+	 *
+	 * Format: Config.AutoSkill.Build = [[skillID, count, satisfy], [skillID, count, satisfy], ... [skillID, count, satisfy]];
+	 *	skill - skill id number (see /sdk/skills.txt)
+	 *	count - maximum number of skill points to allocate for that skill
+	 *	satisfy - boolean value to stop(true) or continue(false) further allocation until count is met. Defaults to true if not specified.
+	 *
+	 *	See libs/config/Templates/AutoSkillExampleBuilds.txt for Config.AutoSkill.Build examples.
+	 */
+	Config.AutoSkill.Enabled = false; // Enable or disable AutoSkill system
+	Config.AutoSkill.Save = 0; // Number of skill points that will not be spent and saved
+	Config.AutoSkill.Build = [];
+
+	/* AutoStat builds character based on array defined by the user and this will replace AutoBuild's stat system.
+	 * AutoStat will stat Build array order. You may want to stat strength or dexterity first to meet item requirements.
+	 *
+	 * Format: Config.AutoStat.Build = [[statType, stat], [statType, stat], ... [statType, stat]];
+	 *	statType - defined as string, or as corresponding stat integer. "strength" or 0, "dexterity" or 2, "vitality" or 3, "energy" or 1
+	 *	stat - set to an integer value, and it will spend stat points until it reaches desired *hard stat value (*+stats from items are ignored).
+	 *	You can also set stat to string value "all", and it will spend all the remaining points.
+	 *	Dexterity can be set to "block" and it will stat dexterity up the the desired block value specified in arguemnt (ignored in classic).
+	 *
+	 *	See libs/config/Templates/AutoStatExampleBuilds.txt for Config.AutoStat.Build examples.
+	 */
+	Config.AutoStat.Enabled = false; // Enable or disable AutoStat system
+	Config.AutoStat.Save = 0; // Number stat points that will not be spent and saved.
+	Config.AutoStat.BlockChance = 0; // An integer value set to desired block chance. This is ignored in classic.
+	Config.AutoStat.UseBulk = true; // Set true to spend multiple stat points at once (up to 100), or false to spend singe point at a time.
+	Config.AutoStat.Build = [];
+
 	// AutoBuild System ( See /d2bs/kolbot/libs/config/Builds/README.txt for instructions )
 	Config.AutoBuild.Enabled = true;			//	This will enable or disable the AutoBuild system
-	
+
 	Config.AutoBuild.Template = "Sonic";	//	The name of the build associated with an existing 
 												//	template filename located in libs/config/Builds/
 

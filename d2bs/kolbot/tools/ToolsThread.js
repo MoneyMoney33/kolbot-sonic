@@ -19,7 +19,8 @@ include("common/Cubing.js");
 include("common/CollMap.js");
 include("common/Config.js");
 include("common/Loader.js");
-include("common/Misc.js");
+include("common/misc.js");
+include("common/util.js");
 include("common/Pickit.js");
 include("common/Pather.js");
 include("common/Precast.js");
@@ -37,6 +38,7 @@ function main() {
 		debugInfo = {area: 0, currScript: "no entry"},
 		pingTimer = [],
 		quitFlag = false,
+		quitListDelayTime,
 		cloneWalked = false,
 		canQuit = true,
 		timerLastDrink = [];
@@ -45,6 +47,7 @@ function main() {
 	D2Bot.init();
 	Config.init(false);
 	Pickit.init(false);
+	Attack.init();
 	Storage.Init();
 	CraftingSystem.buildLists();
 	Runewords.init();
@@ -201,8 +204,13 @@ function main() {
 
 			break;
 		case 2:
-		case 4:
 			if (timerLastDrink[type] && (tNow - timerLastDrink[type] < 300)) { // small delay for juvs just to prevent using more at once
+				return false;
+			}
+
+			break;
+		case 4:
+			if (timerLastDrink[type] && (tNow - timerLastDrink[type] < 2000)) { // larger delay for juvs just to prevent using more at once, considering merc update rate
 				return false;
 			}
 
@@ -350,7 +358,14 @@ function main() {
 			this.togglePause();
 
 			break;
-		case 123: // F12 key
+		case 35: // End key
+			MuleLogger.logChar();
+			delay(rand(Config.QuitListDelay[0] * 1e3, Config.QuitListDelay[1] * 1e3));
+			D2Bot.printToConsole(me.profile + " - end run " + me.gamename);
+			D2Bot.stop(me.profile, true);
+
+			break;
+		case 45: // Ins key
 			me.overhead("Revealing " + Pather.getAreaName(me.area));
 			revealLevel(true);
 
@@ -362,18 +377,18 @@ function main() {
 			var realFCR = me.getStat(105) - Config.FCR;
 			var realIAS = me.getStat(93) - Config.IAS;
 			var realFBR = me.getStat(102) - Config.FBR;
-			var realFHR = me.getStat(99) - Config.FHR;	
+			var realFHR = me.getStat(99) - Config.FHR;
 
 			print("ÿc4MF: ÿc0" + me.getStat(80) + " ÿc4GF: ÿc0" + me.getStat(79) + " ÿc1FR: ÿc0" + me.getStat(39) +
-				" ÿc3CR: ÿc0" + me.getStat(43) + " ÿc9LR: ÿc0" + me.getStat(41) + " ÿc2PR: ÿc0" + me.getStat(45) + 
-				"\n" + 
-				"FCR: " + realFCR + " IAS: " + realIAS + " FBR: " + realFBR + 
-				" FHR: " + realFHR + " FRW: " + me.getStat(96) + 
+				" ÿc3CR: ÿc0" + me.getStat(43) + " ÿc9LR: ÿc0" + me.getStat(41) + " ÿc2PR: ÿc0" + me.getStat(45) +
 				"\n" +
-				"CB: " + me.getStat(136) + " DS: " + me.getStat(141) + " OW: " + me.getStat(135) + 
-				" ÿc1LL: ÿc0" + me.getStat(60) + " ÿc3ML: ÿc0" + me.getStat(62) + 
-				" DR: " + me.getStat(36) + "% + " + me.getStat(34) + " MDR: " + me.getStat(37) + "% + " + me.getStat(35) + 
-				"\n" + 
+				"FCR: " + realFCR + " IAS: " + realIAS + " FBR: " + realFBR +
+				" FHR: " + realFHR + " FRW: " + me.getStat(96) +
+				"\n" +
+				"CB: " + me.getStat(136) + " DS: " + me.getStat(141) + " OW: " + me.getStat(135) +
+				" ÿc1LL: ÿc0" + me.getStat(60) + " ÿc3ML: ÿc0" + me.getStat(62) +
+				" DR: " + me.getStat(36) + "% + " + me.getStat(34) + " MDR: " + me.getStat(37) + "% + " + me.getStat(35) +
+				"\n" +
 				(me.getStat(153) > 0 ? "ÿc3Cannot be Frozenÿc1" : "" ));
 
 			break;
@@ -424,6 +439,13 @@ function main() {
 					(Config.QuitList instanceof Array && Config.QuitList.indexOf(name1) > -1)) {
 				print(name1 + (mode === 0 ? " timed out" : " left"));
 
+				if (typeof Config.QuitListDelay !== "undefined" && typeof quitListDelayTime === "undefined" && Config.QuitListDelay.length > 0) {
+					Config.QuitListDelay.sort(function(a, b){return a-b});
+					quitListDelayTime = getTickCount() + rand(Config.QuitListDelay[0] * 1e3, Config.QuitListDelay[1] * 1e3);
+				} else {
+					quitListDelayTime = getTickCount();
+				}
+
 				quitFlag = true;
 			}
 
@@ -432,7 +454,7 @@ function main() {
 			}
 
 			break;
-		case 0x06: // "%Name1 was Slain by %Name2" 
+		case 0x06: // "%Name1 was Slain by %Name2"
 			if (Config.AntiHostile && param2 === 0x00 && name2 === me.name) {
 				scriptBroadcast("mugshot " + name1);
 			}
@@ -639,7 +661,7 @@ function main() {
 			quitFlag = true;
 		}
 
-		if (quitFlag && canQuit) {
+		if (quitFlag && canQuit && (typeof quitListDelayTime === "undefined" || getTickCount() >= quitListDelayTime)) {
 			print("ÿc8Run duration ÿc2" + ((getTickCount() - me.gamestarttime) / 1000));
 
 			if (Config.LogExperience) {
